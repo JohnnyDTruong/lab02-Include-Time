@@ -6,16 +6,17 @@ Lab 02 - Functions
 */
 
 #include <iostream>
+#include <cstdlib>  // for std::rand and std::srand
 #include <time.h>
 using namespace std;
 
 char menu();
 void takeHit(int &playerHP);
-int makeAttack(int enemyHP);
+int makeAttack(int &enemyHP);
 
 int main()
 {
-	srand(time(0));
+	srand(static_cast<unsigned>(time(0)));  // Seed the random number generator
 	cout << "Starting the RPG!" << endl;
 	cout << "You spawned with 20 health!" << endl;
 
@@ -39,11 +40,13 @@ int main()
 		else
 		{
 			cout << "You quickly ran away!" << endl;
+			break; //program ends
 		}
 
 	} 
-	while (playerHP > 0 && enemyHP > 0 && choice != 'b');
-	cout << "Your GAME is OVER!" << endl;
+	while (playerHP > 0 && enemyHP > 0);
+	cout << "/n Your GAME is OVER!" << endl;
+	return 0;
 
 }
 //this function allows the users to bring up the menu and
@@ -61,8 +64,8 @@ char menu()
 //the player will receive from the enemy
 void takeHit(int &playerHP)
 {
-	int enemyAttack(rand() % 5 + 1);
-	playerHP = playerHP - enemyAttack;
+	int enemyAttack = rand() % 5 + 1;  // Random damage between 1 and 5
+	playerHP -= enemyAttack;
 	cout << "The enemy strikes you for " << enemyAttack << " damage" << endl;
 	
 	if (playerHP > 0)
@@ -71,25 +74,29 @@ void takeHit(int &playerHP)
 	}
 	else
 	{
-		cout << "You have been demolished!!" << endl;
+		cout << "/n You have been demolished!!" << endl;
 	}
 }
 
 //this function calculates the amount of damage
 //the enemy receives from the player's attack
-int makeAttack(int enemyHP)
+int makeAttack(int &enemyHP)
 {
-	int playerAttack = (rand() % 3 + 1);
-	int newenemyHP = enemyHP - playerAttack;
+	int playerAttack = rand() % 3 + 1;  // Random damage between 1 and 3
+	enemyHP -= playerAttack;
 	cout << "You strike your foe for " << playerAttack << " damage" << endl;
 
 	//this part changes the text depending on the enemy's HP
-	if (newenemyHP > 0)
+	if (enemyHP > 0)
 	{
-		cout << newenemyHP << " enemy HP remains!" << endl;
+		cout << enemyHP << " enemy HP remains!" << endl;
+	}
+	else
+	{
+		cout << "\n The enemy has been slained!!" << endl;
 	}
 
-	return newenemyHP;
+	return enemyHP;
 }
 
 /*
